@@ -2,6 +2,10 @@ const fs = require('fs').promises;
 const path = require('path');
 const { exec } = require('child_process');
 const { promisify } = require('util');
+const { GitManager } = require('./GitTools');
+const { MultiEditManager } = require('./MultiEditTools');
+const { NavigationManager } = require('./NavigationTools');
+const { SyntaxManager } = require('./SyntaxTools');
 
 const execAsync = promisify(exec);
 
@@ -17,6 +21,10 @@ class ToolManager {
     
     this.tools = new Map();
     this.toolMetrics = new Map();
+    this.gitManager = new GitManager(this.config);
+    this.multiEditManager = new MultiEditManager(this.config);
+    this.navigationManager = new NavigationManager(this.config);
+    this.syntaxManager = new SyntaxManager(this.config);
     this.registerDefaultTools();
   }
   
@@ -35,14 +43,81 @@ class ToolManager {
     
     // Project operations
     this.registerTool('run_command', new CommandExecutorTool(this.config));
-    this.registerTool('git_status', new GitStatusTool(this.config));
     this.registerTool('npm_info', new NPMInfoTool(this.config));
     
     // Task management
     this.registerTool('todo_write', new TodoTool(this.config));
     this.registerTool('todo_read', new TodoReadTool(this.config));
     
+    // Git operations - register all Git tools
+    this.registerGitTools();
+    
+    // Multi-edit operations - register all multi-edit tools
+    this.registerMultiEditTools();
+    
+    // Navigation operations - register all navigation tools
+    this.registerNavigationTools();
+    
+    // Syntax operations - register all syntax tools
+    this.registerSyntaxTools();
+    
     console.log(`🔧 Registered ${this.tools.size} default tools`);
+  }
+  
+  registerGitTools() {
+    // Register all Git tools from GitManager
+    const gitTools = this.gitManager.getToolDefinitions();
+    gitTools.forEach(gitTool => {
+      this.registerTool(gitTool.name, {
+        description: gitTool.description,
+        inputSchema: gitTool.input_schema,
+        execute: async (input) => {
+          return await this.gitManager.executeTool(gitTool.name, input);
+        }
+      });
+    });
+  }
+  
+  registerMultiEditTools() {
+    // Register all Multi-edit tools from MultiEditManager
+    const multiEditTools = this.multiEditManager.getToolDefinitions();
+    multiEditTools.forEach(multiEditTool => {
+      this.registerTool(multiEditTool.name, {
+        description: multiEditTool.description,
+        inputSchema: multiEditTool.input_schema,
+        execute: async (input) => {
+          return await this.multiEditManager.executeTool(multiEditTool.name, input);
+        }
+      });
+    });
+  }
+  
+  registerNavigationTools() {
+    // Register all Navigation tools from NavigationManager
+    const navigationTools = this.navigationManager.getToolDefinitions();
+    navigationTools.forEach(navTool => {
+      this.registerTool(navTool.name, {
+        description: navTool.description,
+        inputSchema: navTool.input_schema,
+        execute: async (input) => {
+          return await this.navigationManager.executeTool(navTool.name, input);
+        }
+      });
+    });
+  }
+  
+  registerSyntaxTools() {
+    // Register all Syntax tools from SyntaxManager
+    const syntaxTools = this.syntaxManager.getToolDefinitions();
+    syntaxTools.forEach(syntaxTool => {
+      this.registerTool(syntaxTool.name, {
+        description: syntaxTool.description,
+        inputSchema: syntaxTool.input_schema,
+        execute: async (input) => {
+          return await this.syntaxManager.executeTool(syntaxTool.name, input);
+        }
+      });
+    });
   }
   
   registerTool(name, tool) {

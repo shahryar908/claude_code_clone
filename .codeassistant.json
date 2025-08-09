@@ -1,0 +1,10 @@
+{
+  "model": "llama-3.3-70b-versatile",
+  "maxTokens": 20000,
+  "temperature": 0.1,
+  "safeMode": true,
+  "autoSave": true,
+  "preferredLanguage": "javascript",
+  "testingFramework": "jest",
+  "codeStyle": "modern"
+}

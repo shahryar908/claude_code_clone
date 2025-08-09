@@ -1,0 +1,19 @@
+{
+  "testEnvironment": "node",
+  "collectCoverageFrom": [
+    "core/**/*.js",
+    "prompts/**/*.js",
+    "tools/**/*.js",
+    "workflow/**/*.js",
+    "!**/node_modules/**"
+  ],
+  "coverageDirectory": "coverage",
+  "coverageReporters": [
+    "text",
+    "lcov",
+    "html"
+  ],
+  "testMatch": [
+    "**/tests/**/*.test.js"
+  ]
+}

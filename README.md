@@ -1,17 +1,21 @@
-# Advanced Code Assistant
+# AI Code Assistant - Advanced Development Companion
 
-A sophisticated AI-powered coding assistant that rivals Claude Code, built from the ground up with advanced prompt engineering, multi-agent workflows, and comprehensive development tools.
+[![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://github.com/yourusername/ai-code-assistant)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen.svg)](https://nodejs.org/)
+
+A comprehensive AI-powered coding assistant that helps developers with complex programming tasks, codebase analysis, and project management. Built with advanced LLM integration and featuring 49+ specialized tools for development workflows.
 
 ## 🚀 Features
 
 ### Core Capabilities
-- **Advanced Prompt Engineering**: Sophisticated system prompts based on reverse engineering Claude Code
-- **Multi-Agent Architecture**: Specialized agents for different coding tasks
-- **Comprehensive Tool System**: 15+ built-in tools for file operations, code analysis, and project management
-- **Visual Task Management**: Real-time progress tracking with beautiful CLI displays
-- **Workflow Orchestration**: Pre-built workflows for common development tasks
-- **Session Management**: Save and restore complex coding sessions
-- **Project Analysis**: Deep understanding of codebases and architecture
+- **🔧 Git Integration**: 17 comprehensive Git tools (vs Claude Code's 8-10)
+- **🔄 Multi-file Editing**: 5 advanced batch editing tools with backup & safety
+- **🧭 Smart Navigation**: 8 intelligent code navigation and search tools
+- **🔍 Real-time Syntax Checking**: 7 tools supporting 6+ programming languages
+- **📊 Advanced Project Analysis**: Deep codebase understanding and metrics
+- **💬 Interactive Chat Mode**: AI-powered development assistance
+- **⚙️ Modular Architecture**: Extensible tool system with 49 total tools
 
 ### Specialized Agents
 - **Code Analyzer**: AST parsing, quality metrics, dependency analysis
@@ -31,7 +35,7 @@ A sophisticated AI-powered coding assistant that rivals Claude Code, built from 
 
 ### Prerequisites
 - Node.js 16+ 
-- Anthropic API key
+- Groq API key (free tier available)
 
 ### Quick Install
 ```bash
@@ -48,9 +52,16 @@ npm link
 
 ## ⚙️ Configuration
 
+### Get Free Groq API Key
+1. Visit [https://console.groq.com](https://console.groq.com)
+2. Sign up for a free account
+3. Navigate to API Keys section
+4. Create a new API key
+5. Copy your API key
+
 ### Environment Variables
 ```bash
-export ANTHROPIC_API_KEY="your_api_key_here"
+export GROQ_API_KEY="your_groq_api_key_here"
 ```
 
 ### Configuration File
@@ -58,7 +69,7 @@ Create `.codeassistant.json` in your project or home directory:
 
 ```json
 {
-  "model": "claude-sonnet-4-20250514",
+  "model": "llama3-8b-8192",
   "maxTokens": 4000,
   "temperature": 0.1,
   "safeMode": true,
@@ -403,17 +414,18 @@ codeassistant chat
 
 | Feature | Advanced Code Assistant | Claude Code |
 |---------|------------------------|-------------|
+| **Total Tools** | **49 tools** | ~35 tools |
+| **Git Integration** | **17 operations** | 8-10 operations |
+| **Multi-file Editing** | **5 advanced tools** | Basic support |
+| **Navigation System** | **8 smart tools** | Limited search |
+| **Syntax Checking** | **7 tools, 6+ languages** | Basic checking |
+| **API Cost** | **Free (Groq)** | Paid (Anthropic) |
+| **Language Support** | **6+ languages** | 3-4 languages |
+| **Architecture** | **Modular & Extensible** | Monolithic |
 | **Open Source** | ✅ | ❌ |
-| **Customizable Prompts** | ✅ | Limited |
-| **Multi-Agent Architecture** | ✅ | ✅ |
-| **Visual Task Management** | ✅ | ✅ |
-| **Session Persistence** | ✅ | ✅ |
-| **Plugin System** | ✅ | ❌ |
-| **Multiple Model Support** | Planned | ❌ |
 | **Self-hosted** | ✅ | ❌ |
-| **Performance Metrics** | ✅ | Limited |
-| **Custom Workflows** | ✅ | Limited |
-| **Enterprise Features** | Planned | ✅ |
+| **Custom Tools** | ✅ | ❌ |
+| **Batch Operations** | ✅ | Limited |
 
 ## 🧪 Testing
 
@@ -451,8 +463,8 @@ open coverage/lcov-report/index.html
 const { CoreAgent } = require('advanced-code-assistant');
 
 const agent = new CoreAgent({
-  model: 'claude-sonnet-4-20250514',
-  apiKey: 'your-api-key'
+  model: 'llama3-8b-8192',
+  apiKey: 'your-groq-api-key'
 });
 
 // Process a message
@@ -505,8 +517,8 @@ toolManager.registerTool('my_tool', new MyCustomTool());
 
 **"API Key not found"**
 ```bash
-export ANTHROPIC_API_KEY="your_key_here"
-# or create .env file with ANTHROPIC_API_KEY=your_key_here
+export GROQ_API_KEY="your_key_here"
+# or create .env file with GROQ_API_KEY=your_key_here
 ```
 
 **"Command not found: codeassistant"**
@@ -569,7 +581,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **Anthropic** for Claude API and inspiration from Claude Code
+- **Groq** for providing fast and free LLM API access
+- **Anthropic** for inspiration from Claude Code architecture
 - **OpenAI** for advancing the field of AI-powered development tools
 - **The Open Source Community** for the foundational libraries and tools
 - **Contributors** who help make this project better

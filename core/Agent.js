@@ -100,11 +100,25 @@ class CoreAgent extends EventEmitter {
     
     const request = {
       model: this.config.model,
-      max_tokens: this.config.maxTokens,
+      max_tokens: Math.min(this.config.maxTokens, 2048), // Reduce max tokens to prevent overflow
       temperature: this.config.temperature,
       messages,
       ...(this.tools.size > 0 && { tools: this.getGroqToolDefinitions() })
     };
+    
+    // Final safety check - estimate total request size
+    const requestSize = JSON.stringify(request).length / 3.5;
+    if (requestSize > this.config.contextWindowLimit * 0.9) {
+      // Emergency pruning - keep only the most recent messages
+      const emergencyMessages = messages.slice(-3); // Keep only last 3 messages + system
+      if (this.systemPrompt && emergencyMessages[0].role !== 'system') {
+        emergencyMessages.unshift({
+          role: 'system',
+          content: this.systemPrompt.substring(0, 500) // Truncate system prompt if needed
+        });
+      }
+      request.messages = emergencyMessages;
+    }
     
     return request;
   }
@@ -273,16 +287,25 @@ class CoreAgent extends EventEmitter {
   }
   
   async manageContextWindow() {
-    // Estimate token count (rough approximation: 1 token ≈ 4 characters)
-    const estimatedTokens = JSON.stringify(this.messageHistory).length / 4;
+    // Better token estimation: 1 token ≈ 3.5 characters on average
+    const messageTokens = JSON.stringify(this.messageHistory).length / 3.5;
+    const systemTokens = this.systemPrompt ? this.systemPrompt.length / 3.5 : 0;
+    const toolTokens = this.tools.size > 0 ? JSON.stringify(this.getGroqToolDefinitions()).length / 3.5 : 0;
     
-    if (estimatedTokens > this.config.contextWindowLimit * 0.8) {
-      // Remove oldest messages, but keep system messages and recent context
-      const messagesToKeep = Math.floor(this.config.maxHistoryLength / 2);
+    const totalEstimatedTokens = messageTokens + systemTokens + toolTokens;
+    
+    // Use more aggressive pruning - keep only 60% of context limit
+    if (totalEstimatedTokens > this.config.contextWindowLimit * 0.6) {
+      // Keep fewer messages to leave room for system prompt and tools
+      const messagesToKeep = Math.max(5, Math.floor(this.config.maxHistoryLength / 3));
       const recentMessages = this.messageHistory.slice(-messagesToKeep);
       
       this.messageHistory = recentMessages;
-      this.emit('context:pruned', { keptMessages: messagesToKeep });
+      this.emit('context:pruned', { 
+        keptMessages: messagesToKeep, 
+        estimatedTokens: totalEstimatedTokens,
+        contextLimit: this.config.contextWindowLimit 
+      });
     }
   }
   

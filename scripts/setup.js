@@ -14,7 +14,7 @@ class ProjectSetup {
       
       console.log(chalk.green('\n✅ Setup completed successfully!'));
       console.log(chalk.yellow('\n📖 Next steps:'));
-      console.log('1. Set your Anthropic API key: export ANTHROPIC_API_KEY="your_key"');
+      console.log('1. Set your Groq API key: export GROQ_API_KEY="your_key"');
       console.log('2. Start with: codeassistant chat');
       console.log('3. Or analyze a project: codeassistant analyze');
       
@@ -109,7 +109,7 @@ class ProjectSetup {
     
     // Default config
     const defaultConfig = {
-      model: 'claude-sonnet-4-20250514',
+      model: 'llama3-8b-8192',
       maxTokens: 4000,
       temperature: 0.1,
       safeMode: true,
@@ -123,11 +123,11 @@ class ProjectSetup {
     console.log(chalk.gray('  Created: .codeassistant.json'));
     
     // Environment template
-    const envTemplate = `# Anthropic API Configuration
-ANTHROPIC_API_KEY=your_api_key_here
+    const envTemplate = `# Groq API Configuration
+GROQ_API_KEY=your_groq_api_key_here
 
 # Optional: Custom API base URL
-# ANTHROPIC_BASE_URL=https://api.anthropic.com/v1/messages
+# GROQ_BASE_URL=https://api.groq.com/openai/v1/chat/completions
 
 # Optional: Debug settings
 # DEBUG=codeassistant:*
@@ -268,8 +268,8 @@ async function exampleUsage() {
   
   // Initialize components
   const agent = new CoreAgent({
-    apiKey: process.env.ANTHROPIC_API_KEY,
-    model: 'claude-sonnet-4-20250514'
+    apiKey: process.env.GROQ_API_KEY,
+    model: 'llama3-8b-8192'
   });
   
   const toolManager = new ToolManager();

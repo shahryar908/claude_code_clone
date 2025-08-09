@@ -1,11 +1,13 @@
 {
-  "name": "advanced-code-assistant",
+  "name": "ai-code-assistant",
   "version": "1.0.0",
-  "description": "A sophisticated AI-powered coding assistant that rivals Claude Code",
+  "description": "Advanced AI-powered coding assistant with 49+ tools for comprehensive development workflows",
   "main": "cli/main.js",
   "bin": {
-    "codeassistant": "./cli/main.js"
+    "codeassistant": "./cli/main.js",
+    "aca": "./cli/main.js"
   },
+  "preferGlobal": true,
   "scripts": {
     "start": "node cli/main.js",
     "chat": "node cli/main.js chat",
@@ -13,25 +15,51 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix",
+    "test:integration": "jest --testPathPattern=tests/integration",
+    "test:unit": "jest --testPathPattern=tests/unit",
+    "test:e2e": "jest --testPathPattern=tests/e2e",
+    "lint": "eslint . --ext .js --ignore-pattern node_modules/",
+    "lint:fix": "eslint . --ext .js --fix --ignore-pattern node_modules/",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,json,md}\"",
     "dev": "nodemon cli/main.js",
-    "build": "pkg cli/main.js --out-path dist",
+    "build": "pkg cli/main.js --out-path dist --targets node16-linux-x64,node16-macos-x64,node16-win-x64",
+    "build:docker": "docker build -t ai-code-assistant .",
     "docs": "jsdoc -c jsdoc.conf.json",
-    "postinstall": "node scripts/setup.js"
+    "docs:serve": "http-server docs/ -p 8080",
+    "postinstall": "node scripts/setup.js",
+    "prepublishOnly": "npm test && npm run lint && npm run build",
+    "release": "npm version patch && npm publish",
+    "clean": "rimraf dist/ docs/ coverage/ .sessions/ temp/"
   },
   "keywords": [
     "ai",
+    "artificial-intelligence",
     "coding-assistant",
-    "claude",
+    "claude-code",
     "anthropic",
+    "groq",
+    "llm",
     "cli",
     "code-generation",
     "refactoring",
-    "development-tools"
+    "development-tools",
+    "automation",
+    "git-integration",
+    "multi-file-editing",
+    "code-analysis",
+    "project-management",
+    "developer-productivity",
+    "ai-programming",
+    "code-review",
+    "test-generation"
   ],
-  "author": "Your Name <your.email@example.com>",
+  "author": "Developer Community <community@ai-code-assistant.dev>",
   "license": "MIT",
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/ai-code-assistant"
+  },
   "dependencies": {
     "commander": "^11.1.0",
     "chalk": "^4.1.2",
@@ -41,26 +69,80 @@
     "axios": "^1.6.0",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "ws": "^8.14.2"
+    "ws": "^8.14.2",
+    "semver": "^7.5.4",
+    "glob": "^10.3.10",
+    "mime-types": "^2.1.35",
+    "uuid": "^9.0.1",
+    "cli-progress": "^3.12.0",
+    "node-fetch": "^2.7.0"
   },
   "devDependencies": {
     "jest": "^29.7.0",
     "eslint": "^8.54.0",
     "eslint-config-standard": "^17.1.0",
+    "prettier": "^3.0.3",
     "nodemon": "^3.0.1",
     "pkg": "^5.8.1",
     "jsdoc": "^4.0.2",
-    "@types/node": "^20.9.0"
+    "@types/node": "^20.9.0",
+    "rimraf": "^5.0.5",
+    "http-server": "^14.1.1",
+    "supertest": "^6.3.3",
+    "@babel/preset-env": "^7.23.2",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.0.2"
   },
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=16.0.0",
+    "npm": ">=7.0.0"
   },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/advanced-code-assistant.git"
+    "url": "git+https://github.com/shahryar908/ai-code-assistant.git"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/advanced-code-assistant/issues"
+    "url": "https://github.com/shahryar908/ai-code-assistant/issues"
   },
-  "homepage": "https://github.com/yourusername/advanced-code-assistant#readme"
+  "homepage": "https://github.com/shahryar908/ai-code-assistant#readme",
+  "files": [
+    "cli/",
+    "core/",
+    "prompts/",
+    "tools/",
+    "workflow/",
+    "scripts/",
+    "README.md",
+    "LICENSE",
+    "package.json",
+    "package-lock.json"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged",
+      "pre-push": "npm test"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md}": [
+      "prettier --write"
+    ]
+  }
 }

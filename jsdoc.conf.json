@@ -1,0 +1,21 @@
+{
+  "source": {
+    "include": [
+      "./core",
+      "./prompts",
+      "./tools",
+      "./workflow",
+      "./cli"
+    ],
+    "includePattern": "\\.(js)$",
+    "exclude": [
+      "node_modules/"
+    ]
+  },
+  "opts": {
+    "destination": "./docs/"
+  },
+  "plugins": [
+    "plugins/markdown"
+  ]
+}
