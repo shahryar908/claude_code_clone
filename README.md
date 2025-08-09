@@ -520,7 +520,7 @@ toolManager.registerTool('my_tool', new MyCustomTool());
 export GROQ_API_KEY="your_key_here"
 # or create .env file with GROQ_API_KEY=your_key_here
 
-as we need to llm model which had context window of more than 20 k so which is why we can 
+As we need to use llm model which had context window of more than 20 k so which is why we can 
 use the anthropic models those can context window 200k 
 which can make this cli aegent more powerful and authentic to use
 as they are also state of art model for code genration
@@ -606,6 +606,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-**Built with ❤️ by developers, for developers**
+**Built with ❤️ by shahryar, for developers**
 
 *Transform your coding workflow with AI-powered assistance that understands your context, follows your patterns, and helps you build better software faster.*
