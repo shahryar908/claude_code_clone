@@ -519,6 +519,11 @@ toolManager.registerTool('my_tool', new MyCustomTool());
 ```bash
 export GROQ_API_KEY="your_key_here"
 # or create .env file with GROQ_API_KEY=your_key_here
+
+as we need to llm model which had context window of more than 20 k so which is why we can 
+use the anthropic models those can context window 200k 
+which can make this cli aegent more powerful and authentic to use
+as they are also state of art model for code genration
 ```
 
 **"Command not found: codeassistant"**
